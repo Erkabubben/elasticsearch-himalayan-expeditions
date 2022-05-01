@@ -19,6 +19,9 @@ import { router } from './routes/router.js'
 import http from 'http'
 import { Server } from 'socket.io'
 
+// ElasticSearch
+import elasticsearch from '@elastic/elasticsearch'
+
 /**
  * The main function of the application.
  */
@@ -152,6 +155,31 @@ const main = async () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
+
+  var client = new elasticsearch.Client({
+    node: 'https://localhost:9200',
+    auth: {
+      username: 'elastic',
+      password: 'YV*qpXSUJW3ejFl*iL6Q'
+    },
+    tls: { rejectUnauthorized: false }
+  })
+  
+  async function run () {
+    try {
+      const result = await client.search({
+        index: 'all-summiters',
+        query: {
+          "match_all": {}
+        }
+      })
+      console.log(result.hits.hits)
+    } catch (error) {
+      console.log('ERROR: ' + error)
+    }
+  }
+  
+  run()
 }
 
 main().catch(console.error)

@@ -18,6 +18,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@elastic/elasticsearch": "^8.1.0",
     "express": "^4.17.1",
     "express-hbs": "^2.3.4",
     "express-session": "^1.17.1",

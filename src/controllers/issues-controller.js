@@ -32,7 +32,7 @@ export class IssuesController {
       const responseJSON = await response.json()
       // Parse response data to an array of Issue objects
       const issues = []
-      responseJSON.forEach(element => {
+      /*responseJSON.forEach(element => {
         const issue = {
           title: element.title,
           description: element.description,
@@ -44,7 +44,7 @@ export class IssuesController {
         if (element.closed_at !== null) issue.done = true
         else issue.done = false
         issues.push(issue)
-      })
+      })*/
       // Render the index page based on the Issues data
       res.render('real-time-issues/index', { issues })
     } catch (error) {
