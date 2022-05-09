@@ -15,12 +15,11 @@ import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/router.js'
 
+import { ElasticSearchController } from './elastic-search-controller.js'
+
 // Socket.io: To add Socket.io support
 import http from 'http'
 import { Server } from 'socket.io'
-
-// ElasticSearch
-import elasticsearch from '@elastic/elasticsearch'
 
 /**
  * The main function of the application.
@@ -156,30 +155,8 @@ const main = async () => {
     console.log('Press Ctrl-C to terminate...')
   })
 
-  var client = new elasticsearch.Client({
-    node: 'https://localhost:9200',
-    auth: {
-      username: 'elastic',
-      password: 'YV*qpXSUJW3ejFl*iL6Q'
-    },
-    tls: { rejectUnauthorized: false }
-  })
-  
-  async function run () {
-    try {
-      const result = await client.search({
-        index: 'all-summiters',
-        query: {
-          "match_all": {}
-        }
-      })
-      console.log(result.hits.hits)
-    } catch (error) {
-      console.log('ERROR: ' + error)
-    }
-  }
-  
-  run()
+  const elasticSearchController = new ElasticSearchController()
+  await elasticSearchController.run()
 }
 
 main().catch(console.error)

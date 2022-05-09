@@ -19,7 +19,20 @@ export class IssuesController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
    */
-  async index (req, res, next) {
+   async index (req, res, next) {
+
+    
+    res.render('real-time-issues/index')
+  }
+
+  /**
+   * Retrieves the Issues list from GitLab and displays the index page.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  /*async index (req, res, next) {
     try {
       // Retrieve Issues list from GitLab by API call
       const url = process.env.GITLAB_API_PROJECT_ISSUES_URL
@@ -32,7 +45,7 @@ export class IssuesController {
       const responseJSON = await response.json()
       // Parse response data to an array of Issue objects
       const issues = []
-      /*responseJSON.forEach(element => {
+      responseJSON.forEach(element => {
         const issue = {
           title: element.title,
           description: element.description,
@@ -44,13 +57,13 @@ export class IssuesController {
         if (element.closed_at !== null) issue.done = true
         else issue.done = false
         issues.push(issue)
-      })*/
+      })
       // Render the index page based on the Issues data
       res.render('real-time-issues/index', { issues })
     } catch (error) {
       next(error)
     }
-  }
+  }*/
 
   /**
    * Determines whether the incoming Issue event Webhook is caused by
