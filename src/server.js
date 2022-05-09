@@ -93,15 +93,6 @@ const main = async () => {
   const server = http.createServer(app)
   const io = new Server(server)
 
-  // Socket.io; Not necessary, but nice to log when users connect/disconnect
-  io.on('connection', (socket) => {
-    console.log('a user connected')
-
-    socket.on('disconnect', () => {
-      console.log('user disconnected')
-    })
-  })
-
   // Middleware to be executed before the routes.
   app.use((req, res, next) => {
     // Flash messages - survives only a round trip.

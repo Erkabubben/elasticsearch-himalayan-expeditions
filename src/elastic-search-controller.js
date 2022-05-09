@@ -35,6 +35,10 @@ export class ElasticSearchController {
       console.log('ERROR: ' + error)
     }
 
+    await this.client.indices.delete({
+      index: 'summiters'
+    })
+
     await this.client.indices.create({
       index: 'summiters',
       mappings: 
@@ -79,6 +83,28 @@ export class ElasticSearchController {
         }
       }
     })
+
+    await this.client.index({
+      index: 'summiters',
+      document: 
+      {
+        peak_id: 'ACHN',
+        peak_name: 'Aichyn',
+        name: 'Kaya Ko',
+        yr_season: '2015 Aut',
+        date: 'Sep 03',
+        time: '13:15',
+        citizenship: 'Japan',
+        gender: 'F',
+        age: 23,
+        is_o2_used: 'No',
+        died_on_descent: '.',
+        host_country: 'Nepal'
+        
+      }
+    })
+
+    await this.client.indices.refresh({ index: 'summiters' })
 
     try {
       const result = await this.client.search({
