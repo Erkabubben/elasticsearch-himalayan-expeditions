@@ -44,8 +44,9 @@ export class HimalayaController {
       }
     })
     const peakData = results.hits.hits[0]._source
+    const climbStatus = (peakData.climb_status === 'Climbed')
     console.log(peakData)
-    res.render('himalaya/peak', { peakData })
+    res.render('himalaya/peak', { peakData, climbStatus })
   }
 
   /**

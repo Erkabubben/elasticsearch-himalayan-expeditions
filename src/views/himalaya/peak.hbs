@@ -3,9 +3,13 @@
 <b>Host countries:</b> {{peakData.host_contries}}<br>
 <b>Location:</b> {{peakData.location}}, {{peakData.region}} region<br>
 <b>Region:</b> {{peakData.region}}<br>
-<b>Climb status:</b> {{peakData.climb_status}}<br>
-<b>Date of first ascent:</b> {{peakData.first_asc_date}} {{peakData.first_asc_yr}}, {{peakData.first_asc_season}}<br>
-<b>First summiters:</b> {{peakData.first_summiters}}<br>
+{{#if climbStatus}}
+    <b>Climb status:</b>✔️ {{peakData.climb_status}}<br>
+    <b>Date of first ascent:</b> {{peakData.first_asc_date}} {{peakData.first_asc_yr}}, {{peakData.first_asc_season}}<br>
+    <b>First summiters:</b> {{peakData.first_summiters}}<br>
+{{else}}
+    <b>Climb status:</b>❌ {{peakData.climb_status}}<br>
+{{/if}}
 </p>
 
 <div id="issue-list">
