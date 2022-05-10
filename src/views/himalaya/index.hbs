@@ -1,16 +1,17 @@
-<h1 class="center-header">Himalaya</h1>
+<h1 class="center-header">Himalayan Peaks</h1>
 
 <div id="issue-list">
-    {{#if searchResults.length}}
-    {{#each searchResults}}
-    <div class="issue">
-        <div class="issue-header">
-            <h3>S</h3>
-            <h4 class="user-info">S</h4>
-        </div>
-        <div class="issue-body"><p>{{this._source.peak_name}}</p></div>
-    </div>
+    <form action="/peak">
+        <label for="cars">Choose a peak:</label>
+        <select name="peaks" id="peaks">
+    {{#if peaks.length}}
+    {{#each peaks}}
+        <option value="{{this._source.peak_id}}">{{this._source.peak_name}}</option>
     {{/each}}
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+    </form>
     {{else}}
     <p>No results.</p>
     {{/if}}

@@ -22,11 +22,22 @@ export class IssuesController {
    async index (req, res, next) {
     
 
-    const results = await res.elasticSearchController.summitersSearch()
+    //const results = await res.elasticSearchController.summitersSearch()
+    const results = await res.elasticSearchController.search({
+      index: 'peaks',
+      size: 1000,
+      query: {
+        "match_all": {}
+      }
+    })
     const hits = results.hits.hits
     console.log(results.hits.hits)
     
-    res.render('real-time-issues/index', { searchResults: hits } )
+    res.render('himalaya/index', { peaks: hits } )
+  }
+
+  async peak (req, res, next) {
+    res.render('himalaya/peak', { peak: req.query.peaks })
   }
 
   /**

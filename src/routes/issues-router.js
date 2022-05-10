@@ -15,3 +15,4 @@ const controller = new IssuesController()
 
 // Map HTTP verbs and route paths to controller actions.
 router.get('/', controller.index)
+router.get('/peak', controller.peak)
