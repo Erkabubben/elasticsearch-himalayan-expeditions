@@ -147,7 +147,7 @@ const main = async () => {
   })
 
   const elasticSearchController = new ElasticSearchController()
-  await elasticSearchController.run()
+  await elasticSearchController.run(process.env.INIT_ELASTIC_SEARCH === 'true')
 }
 
 main().catch(console.error)

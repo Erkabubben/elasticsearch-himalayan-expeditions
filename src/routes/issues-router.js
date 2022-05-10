@@ -15,7 +15,3 @@ const controller = new IssuesController()
 
 // Map HTTP verbs and route paths to controller actions.
 router.get('/', controller.index)
-router.get('/:issueid/edit', controller.edit)
-router.post('/:issueid/close', controller.close)
-router.post('/:issueid/reopen', controller.reopen)
-router.post('/:issueid/update', controller.update)

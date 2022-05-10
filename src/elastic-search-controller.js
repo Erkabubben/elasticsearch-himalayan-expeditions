@@ -25,22 +25,21 @@ export class ElasticSearchController {
 
     this.indices = [
       'deaths',
-      //'expeditions',
+      'expeditions',
       'peaks',
       'summiters'
     ]
   }
 
-  async run () {
+  async run (initiate) {
 
-    await this.deleteIndices()
-    await this.createIndices()
-    //await this.addTestDocument()
-    await this.addDocumentsFromCSV()
-
-    await this.refreshIndices()
-
-    await this.testSearch()
+    if (initiate) {
+      await this.deleteIndices()
+      await this.createIndices()
+      await this.addDocumentsFromCSV()
+      await this.refreshIndices()
+      await this.testSearch()
+    }
   }
 
   async deleteIndices() {
@@ -86,8 +85,8 @@ export class ElasticSearchController {
             // fix the document before to try it again.
             status: action[operation].status,
             error: action[operation].error,
-            operation: body[i * 2],
-            document: body[i * 2 + 1]
+            //operation: body[i * 2],
+            //document: body[i * 2 + 1]
           })
         }
       })
@@ -124,10 +123,17 @@ export class ElasticSearchController {
 
   async createIndices() {
 
-    await this.client.indices.create( mappings.deaths )
+    //await this.client.indices.create( mappings.deaths )
     //await this.client.indices.create( mappings.expeditions )
-    await this.client.indices.create( mappings.peaks )
-    await this.client.indices.create( mappings.summiters )
+    //await this.client.indices.create( mappings.peaks )
+    //await this.client.indices.create( mappings.summiters )
+
+    for (let i = 0; i < this.indices.length; i++) {
+      const indexName = this.indices[i];
+      const existsResponse = await this.client.indices.exists({ index: indexName })
+      if (!existsResponse)
+        await this.client.indices.create( mappings[indexName] )
+    }
   }
 
   async addTestDocument() {
