@@ -20,9 +20,13 @@ export class IssuesController {
    * @param {Function} next - Express next middleware function.
    */
    async index (req, res, next) {
-
     
-    res.render('real-time-issues/index')
+
+    const results = await res.elasticSearchController.summitersSearch()
+    const hits = results.hits.hits
+    console.log(results.hits.hits)
+    
+    res.render('real-time-issues/index', { searchResults: hits } )
   }
 
   /**

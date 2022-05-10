@@ -110,6 +110,33 @@ export class ElasticSearchController {
     }
   }
 
+  async summitersSearch() {
+    try {
+      const results = await this.client.search({
+        index: 'summiters',
+        size: 2,
+        query: {
+          "match_all": {}
+        }
+      })
+      //console.log(results.hits.hits)
+      return results
+    } catch (error) {
+      console.log('ERROR: ' + error)
+    }
+  }
+
+  async search(searchRequest, printResults = false) {
+    try {
+      const results = await this.client.search(searchRequest)
+      if (printResults)
+        console.log(results.hits.hits)
+      return results
+    } catch (error) {
+      console.log('ERROR: ' + error)
+    }
+  }
+
   async refreshIndices() {
     for (let i = 0; i < this.indices.length; i++) {
       const indexName = this.indices[i];
