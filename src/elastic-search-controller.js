@@ -49,10 +49,6 @@ export class ElasticSearchController {
       if (existsResponse)
         await this.client.indices.delete({ index: indexName })
     }
-    //await this.client.indices.delete({ index: 'deaths' })
-    //await this.client.indices.delete({ index: 'expeditions' })
-    //await this.client.indices.delete({ index: 'peaks' })
-    //await this.client.indices.delete({ index: 'summiters' })
   }
   
   async addDocumentsFromCSV() {
@@ -122,12 +118,6 @@ export class ElasticSearchController {
   }
 
   async createIndices() {
-
-    //await this.client.indices.create( mappings.deaths )
-    //await this.client.indices.create( mappings.expeditions )
-    //await this.client.indices.create( mappings.peaks )
-    //await this.client.indices.create( mappings.summiters )
-
     for (let i = 0; i < this.indices.length; i++) {
       const indexName = this.indices[i];
       const existsResponse = await this.client.indices.exists({ index: indexName })

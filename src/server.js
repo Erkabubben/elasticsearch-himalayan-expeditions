@@ -15,11 +15,8 @@ import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { router } from './routes/router.js'
 
-import { ElasticSearchController } from './elastic-search-controller.js'
-
-// Socket.io: To add Socket.io support
 import http from 'http'
-import { Server } from 'socket.io'
+import { ElasticSearchController } from './elastic-search-controller.js'
 
 /**
  * The main function of the application.
@@ -89,9 +86,10 @@ const main = async () => {
 
   app.use(session(sessionOptions))
 
-  // Socket.io: Add socket.io to the Express project
   const server = http.createServer(app)
-  const io = new Server(server)
+  
+  const elasticSearchController = new ElasticSearchController()
+  await elasticSearchController.run(process.env.INIT_ELASTIC_SEARCH === 'true')
 
   // Middleware to be executed before the routes.
   app.use((req, res, next) => {
@@ -104,8 +102,8 @@ const main = async () => {
     // Pass the base URL to the views.
     res.locals.baseURL = baseURL
 
-    // Socket.io: Add Socket.io to the Response-object to make it available in controllers.
-    res.io = io
+    // ElasticSearch: Add ElasticSearchController to the Response-object to make it available in controllers.
+    res.elasticSearchController = elasticSearchController
 
     next()
   })
@@ -145,9 +143,6 @@ const main = async () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
-
-  const elasticSearchController = new ElasticSearchController()
-  await elasticSearchController.run(process.env.INIT_ELASTIC_SEARCH === 'true')
 }
 
 main().catch(console.error)
