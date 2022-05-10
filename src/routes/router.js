@@ -8,11 +8,11 @@
 
 import express from 'express'
 import createError from 'http-errors'
-import { router as issuesRouter } from './issues-router.js'
+import { router as himalayaRouter } from './himalaya-router.js'
 
 export const router = express.Router()
 
-router.use('/', issuesRouter)
+router.use('/', himalayaRouter)
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => next(createError(404)))

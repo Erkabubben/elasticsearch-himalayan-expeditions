@@ -7,11 +7,11 @@
  */
 
 import express from 'express'
-import { IssuesController } from '../controllers/issues-controller.js'
+import { HimalayaController as HimalayaController } from '../controllers/himalaya-controller.js'
 
 export const router = express.Router()
 
-const controller = new IssuesController()
+const controller = new HimalayaController()
 
 // Map HTTP verbs and route paths to controller actions.
 router.get('/', controller.index)

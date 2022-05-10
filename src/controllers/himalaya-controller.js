@@ -1,5 +1,5 @@
 /**
- * Module for the IssuesController.
+ * Module for the HimalayaController.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @author Mats Loock
@@ -11,7 +11,7 @@ import fetch from 'node-fetch'
 /**
  * Encapsulates a controller.
  */
-export class IssuesController {
+export class HimalayaController {
   /**
    * Retrieves the Issues list from GitLab and displays the index page.
    *
