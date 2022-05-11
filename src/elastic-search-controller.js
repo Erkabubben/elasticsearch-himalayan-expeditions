@@ -6,7 +6,6 @@
  * @version 1.0.0
  */
 
-import express from 'express'
 import elasticsearch from '@elastic/elasticsearch'
 import csv from 'csvtojson'
 import mappings from './mappings.js'

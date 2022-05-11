@@ -76,8 +76,6 @@ export class HimalayaController {
     })
 
     const summitersData = results.hits.hits
-    console.log(summitersData)
-    console.log(results)
 
     function getDataByYear(data, propertyName) {
       const byYear = {}
@@ -146,8 +144,6 @@ export class HimalayaController {
     const summitersByYears = getDataByYear(summitersData, 'yr_season')
     const yearsAndAmounts = getYearsAndAmounts([ deathsByYears, summitersByYears ])
 
-    console.log(yearsAndAmounts)
-
     res.render('himalaya/peak', {
       peakData,
       climbStatus,
@@ -156,7 +152,9 @@ export class HimalayaController {
       deathAmounts: yearsAndAmounts.amountStrings[0],
       displayDeaths: yearsAndAmounts.displayCharts[0],
       summiterAmounts: yearsAndAmounts.amountStrings[1],
-      displaySummiters: yearsAndAmounts.displayCharts[1]
+      displaySummiters: yearsAndAmounts.displayCharts[1],
+      totalSummiters: summitersData.length,
+      totalDeaths: deathsData.length,
     })
   }
 }

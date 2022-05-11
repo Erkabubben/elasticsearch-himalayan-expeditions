@@ -1,4 +1,6 @@
 <h1 class="center-header">{{peakData.peak_name}}</h1>
+
+
 <p><b>Height:</b> {{peakData.height_m}} m / {{peakData.height_ft}} ft<br>
 <b>Host countries:</b> {{peakData.host_contries}}<br>
 <b>Location:</b> {{peakData.location}}, {{peakData.region}} region<br>
@@ -6,7 +8,6 @@
 <br>
 {{#if climbStatus}}
     <b>Climb status:</b>✔️ {{peakData.climb_status}}<br>
-    <b>Total amount of summiters:</b> {{peakData.first_summiters}}<br>
     <b>Date of first ascent:</b> {{peakData.first_asc_date}} {{peakData.first_asc_yr}} ({{peakData.first_asc_season}})<br>
     <b>First summiters:</b> {{peakData.first_summiters}}<br>
 {{else}}
@@ -15,6 +16,7 @@
 </p>
 
 {{#if displaySummiters}}
+<b>Total amount of summiters:</b> {{totalSummiters}}<br>
 <canvas id="summitersChart" width="100%" height="32px"></canvas>
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script type="module">
@@ -44,6 +46,7 @@
 {{/if}}
 <br>
 
+<b>Total amount of deaths:</b> {{totalDeaths}}<br>
 {{#if displayDeaths}}
 <canvas id="deathsChart" width="100%" height="32px"></canvas>
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>

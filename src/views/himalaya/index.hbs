@@ -1,19 +1,19 @@
-<h1 class="center-header">Himalayan Peaks</h1>
+<h1 class="center-header">Welcome!</h1>
+<br>
 
-<div id="issue-list">
-    <form action="/peak">
-        <label for="peaks">Choose a peak:</label>
-        <select name="peaks" id="peaks">
-    {{#if peaks.length}}
-    {{#each peaks}}
-        <option value="{{this._source.peak_id}}">{{this._source.peak_name}}</option>
-    {{/each}}
-    </select>
-    <br><br>
-    <input type="submit" value="Submit">
-    </form>
-    {{else}}
-    <p>No results.</p>
-    {{/if}}
-    <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
-</div>
+<form id="peaks-form" action="/peak">
+    <label for="peaks">Choose a peak:</label>
+    <select name="peaks" id="peaks">
+{{#if peaks.length}}
+{{#each peaks}}
+    <option value="{{this._source.peak_id}}">{{this._source.peak_name}}</option>
+{{/each}}
+</select>
+<br><br>
+<input type="submit" value="Select peak" class="button-link">
+</form>
+{{else}}
+<p>No peaks to display.</p>
+{{/if}}
+
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>

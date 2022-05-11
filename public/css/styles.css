@@ -15,6 +15,14 @@ body {
 ;
 }
 
+#peaks-form {
+  margin: auto;
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
 #background {
   background-image: url('../img/himalaya_bg.jpg');
   background-repeat: no-repeat;
@@ -169,79 +177,7 @@ footer p {
   margin: 0;
 }
 
-div.codesnippet {
-  width: auto;
-  border: solid black 2px;
-  background-color: white;
-  border-radius: 6px;
-  padding: 0;
-  margin: 0.5rem 0;
-}
-
-.codesnippet p, pre {
-  width: auto;
-  overflow-x: auto;
-  font-size: 0.8rem;
-  margin: 0.5rem;
-  padding: 0;
-}
-
-.codesnippet-header {
-  display: block;
-  background-color:	#115887f1;
-  color: rgb(255, 255, 255);
-  padding: 0.5rem;
-}
-
-.codesnippet-header h3 {
-  margin-bottom: 0;
-}
-
-.codesnippet-body {
-  display: block;
-  background-color: #d4d4d4;
-  border: solid black 1px;
-  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-}
-
-.codesnippet-footer {
-  display: grid;
-  width: auto;
-  position: relative;
-  margin-top: 0;
-  grid-template-columns: auto max-content;
-  grid-template-rows: max-content;
-  grid-template-areas:
-    ".  buttonlist"
-}
-
-.codesnippet-footer p {
-  font-size: 0.8rem;
-  text-align: right;
-}
-
-.codesnippet-footer a {
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.codesnippet-footer ul {
-  grid-area: buttonlist;
-  display: flex;
-  flex-direction: row;
-  list-style-type: none;
-  height: max-content;
-  padding: 0px;
-  position: relative;
-  margin-top: 8px;
-}
-
-.codesnippet-footer ul li {
-  margin: 0px;
-  padding: 0px;
-}
-
-a.button-link, button.button-link {
+a.button-link, button.button-link, input.button-link {
   color: white;
   text-align: center;
   background-color:	#24343c;
@@ -253,7 +189,7 @@ a.button-link, button.button-link {
   border: none;
 }
 
-a.button-link:hover, button.button-link:hover {
+a.button-link:hover, button.button-link:hover, input.button-link:hover {
   background-color:	#115887;
 }
 
