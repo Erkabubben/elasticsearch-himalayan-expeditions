@@ -11,13 +11,12 @@ import csv from 'csvtojson'
 import mappings from './mappings.js'
 
 export class ElasticSearchController {
-
-  constructor() {
+  constructor (esPort, esUsername, esPassword) {
     this.client = new elasticsearch.Client({
-      node: 'https://localhost:9200',
+      node: 'https://localhost:' + esPort,
       auth: {
-        username: 'elastic',
-        password: '0PjKNbbr1x9jAaK0A3Hh'
+        username: esUsername,
+        password: esPassword
       },
       tls: { rejectUnauthorized: false }
     })
@@ -31,7 +30,6 @@ export class ElasticSearchController {
   }
 
   async run (initiate) {
-
     if (initiate) {
       await this.deleteIndices()
       await this.createIndices()
@@ -41,28 +39,29 @@ export class ElasticSearchController {
     }
   }
 
-  async deleteIndices() {
+  async deleteIndices () {
     for (let i = 0; i < this.indices.length; i++) {
-      const indexName = this.indices[i];
+      const indexName = this.indices[i]
       const existsResponse = await this.client.indices.exists({ index: indexName })
-      if (existsResponse)
+      if (existsResponse) {
         await this.client.indices.delete({ index: indexName })
+      }
     }
   }
-  
-  async addDocumentsFromCSV() {
+
+  async addDocumentsFromCSV () {
     for (let i = 0; i < this.indices.length; i++) {
-      const indexName = this.indices[i];
+      const indexName = this.indices[i]
       await this.addBulkDocumentsFromCSV('././public/csv/' + indexName + '.csv', indexName)
     }
   }
 
-  async addBulkDocumentsFromCSV(csvPath, indexName) {
-    var jsonArray = await csv().fromFile(csvPath);
+  async addBulkDocumentsFromCSV (csvPath, indexName) {
+    const jsonArray = await csv().fromFile(csvPath)
     await this.addBulkDocuments(indexName, jsonArray)
   }
 
-  async addBulkDocuments(indexName, jsonArray) {
+  async addBulkDocuments (indexName, jsonArray) {
     const operations = jsonArray.flatMap(doc => [{ index: { _index: indexName } }, doc])
     const bulkResponse = await this.client.bulk({ refresh: true, operations })
 
@@ -79,27 +78,27 @@ export class ElasticSearchController {
             // otherwise it's very likely a mapping error, and you should
             // fix the document before to try it again.
             status: action[operation].status,
-            error: action[operation].error,
-            //operation: body[i * 2],
-            //document: body[i * 2 + 1]
+            error: action[operation].error
+            // operation: body[i * 2],
+            // document: body[i * 2 + 1]
           })
         }
       })
       console.log(erroredDocuments)
     }
-  
+
     const count = await this.client.count({ index: indexName })
     console.log(count)
   }
 
-  async testSearch() {
+  async testSearch () {
     for (let i = 0; i < this.indices.length; i++) {
-      const indexName = this.indices[i];
+      const indexName = this.indices[i]
       try {
         const result = await this.client.search({
           index: indexName,
           query: {
-            "match_all": {}
+            match_all: {}
           }
         })
         console.log(result.hits.hits)
@@ -109,53 +108,54 @@ export class ElasticSearchController {
     }
   }
 
-  async summitersSearch() {
+  async summitersSearch () {
     try {
       const results = await this.client.search({
         index: 'summiters',
         size: 2,
         query: {
-          "match_all": {}
+          match_all: {}
         }
       })
-      //console.log(results.hits.hits)
       return results
     } catch (error) {
       console.log('ERROR: ' + error)
     }
   }
 
-  async search(searchRequest, printResults = false) {
+  async search (searchRequest, printResults = false) {
     try {
       const results = await this.client.search(searchRequest)
-      if (printResults)
+      if (printResults) {
         console.log(results.hits.hits)
+      }
       return results
     } catch (error) {
       console.log('ERROR: ' + error)
     }
   }
 
-  async refreshIndices() {
+  async refreshIndices () {
     for (let i = 0; i < this.indices.length; i++) {
-      const indexName = this.indices[i];
+      const indexName = this.indices[i]
       await this.client.indices.refresh({ index: indexName })
     }
   }
 
-  async createIndices() {
+  async createIndices () {
     for (let i = 0; i < this.indices.length; i++) {
-      const indexName = this.indices[i];
+      const indexName = this.indices[i]
       const existsResponse = await this.client.indices.exists({ index: indexName })
-      if (!existsResponse)
-        await this.client.indices.create( mappings[indexName] )
+      if (!existsResponse) {
+        await this.client.indices.create(mappings[indexName])
+      }
     }
   }
 
-  async addTestDocument() {
+  async addTestDocument () {
     await this.client.index({
       index: 'summiters',
-      document: 
+      document:
       {
         peak_id: 'ACHN',
         peak_name: 'Aichyn',
@@ -172,5 +172,4 @@ export class ElasticSearchController {
       }
     })
   }
-
 }

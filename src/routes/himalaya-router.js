@@ -1,5 +1,5 @@
 /**
- * Routes for the Real Time Issues application.
+ * Routes for the Himalayan Expeditions application.
  *
  * @author Erik Lindholm <elimk06@student.lnu.se>
  * @author Mats Loock
@@ -7,7 +7,7 @@
  */
 
 import express from 'express'
-import { HimalayaController as HimalayaController } from '../controllers/himalaya-controller.js'
+import { HimalayaController } from '../controllers/himalaya-controller.js'
 
 export const router = express.Router()
 

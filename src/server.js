@@ -87,8 +87,11 @@ const main = async () => {
   app.use(session(sessionOptions))
 
   const server = http.createServer(app)
-  
-  const elasticSearchController = new ElasticSearchController()
+
+  const elasticSearchController = new ElasticSearchController(
+    process.env.ES_PORT,
+    process.env.ES_USERNAME,
+    process.env.ES_PASSWORD)
   await elasticSearchController.run(process.env.INIT_ELASTIC_SEARCH === 'true')
 
   // Middleware to be executed before the routes.
