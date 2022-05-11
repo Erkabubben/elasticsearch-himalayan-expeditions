@@ -38,8 +38,8 @@ const main = async () => {
     helmet.contentSecurityPolicy({
       directives: { // unsafe-eval added to allow Handlebars to work on client
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", 'code.jquery.com', 'cdn.jsdelivr.net', "'unsafe-eval'"], // Allows scripts to be loaded from the listed sites
-        'img-src': ["'self'", 'secure.gravatar.com'] // Allows images to be loaded from the listed sites
+        'script-src': ["'self'", "'unsafe-inline'", 'code.jquery.com', 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', "'unsafe-eval'"], // Allows scripts to be loaded from the listed sites
+        'img-src': ["'self'"] // Allows images to be loaded from the listed sites
       }
     })
   )
@@ -138,7 +138,6 @@ const main = async () => {
   })
 
   // Starts the HTTP server listening for connections.
-  // Socket.io: Using server instead of express
   server.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
