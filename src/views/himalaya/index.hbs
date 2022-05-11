@@ -1,16 +1,22 @@
 <h1 class="center-header">Welcome!</h1>
-<br>
 
 <form id="peaks-form" action="/peak">
+<!--
     <label for="peaks">Choose a peak:</label>
     <select name="peaks" id="peaks">
 {{#if peaks.length}}
 {{#each peaks}}
-    <option value="{{this._source.peak_id}}">{{this._source.peak_name}}</option>
+    <option value="{{this._source.peak_id}}">
+        {{#if this._source.isClimbed}}✔️{{else}}❌{{/if}} {{this._source.peak_name}}
+    </option>
 {{/each}}
 </select>
 <br><br>
-<input type="submit" value="Select peak" class="button-link">
+<input type="submit" value="Select" class="button-link">
+<br>
+<br>-->
+
+<p>Please select a peak in the dropdown list above.<br><br>Data retrieved from Vladislav Raskoshinskii's <a href="https://www.kaggle.com/datasets/raskoshik/himalayan-expeditions">Himalayan Expeditions dataset on Kaggle.com.</a></p>
 </form>
 {{else}}
 <p>No peaks to display.</p>

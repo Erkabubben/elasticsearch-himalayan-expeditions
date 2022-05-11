@@ -18,19 +18,7 @@ export class HimalayaController {
    * @param {Function} next - Express next middleware function.
    */
   async index (req, res, next) {
-    async function getPeaks () {
-      const results = await res.elasticSearchController.search({
-        index: 'peaks',
-        size: 1000,
-        filter_path: ['hits.hits._source.peak_id', 'hits.hits._source.peak_name'],
-        query: {
-          match_all: {}
-        }
-      })
-      return results.hits.hits
-    }
-
-    res.render('himalaya/index', { peaks: await getPeaks() })
+    res.render('himalaya/index', { peaks: await res.elasticSearchController.getPeaks(req.query.peaks) })
   }
 
   /**
@@ -161,6 +149,7 @@ export class HimalayaController {
     const yearsAndAmounts = getYearsAndAmounts([deathsByYears, summitersByYears])
 
     res.render('himalaya/peak', {
+      peaks: await res.elasticSearchController.getPeaks(req.query.peaks),
       peakData,
       climbStatus,
       displayAnyChart: yearsAndAmounts.displayAnyChart,
