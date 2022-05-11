@@ -11,7 +11,7 @@
  */
 export class HimalayaController {
   /**
-   * Retrieves the Issues list from GitLab and displays the index page.
+   * Retrieves a list of peaks from ElasticSearch and displays the index page.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -33,6 +33,13 @@ export class HimalayaController {
     res.render('himalaya/index', { peaks: await getPeaks() })
   }
 
+  /**
+   * Displays a page with information about a selected peak.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
   async peak (req, res, next) {
     let results = await res.elasticSearchController.search({
       index: 'peaks',
@@ -71,6 +78,13 @@ export class HimalayaController {
 
     const summitersData = results.hits.hits
 
+    /**
+     * Takes data from an ElasticSearch search call and returns a years-amounts object.
+     *
+     * @param {Array} data - Data retrieved from ElasticSearch.
+     * @param {string} propertyName - Name of the property containing the year.
+     * @returns {object} - Object with year-amount key-value pairs.
+     */
     function getDataByYear (data, propertyName) {
       const byYear = {}
 
@@ -87,6 +101,12 @@ export class HimalayaController {
       return byYear
     }
 
+    /**
+     * Displays a page with information about a selected peak.
+     *
+     * @param {Array} byYearsArray - Array of objects with year-amount key-value pairs.
+     * @returns {object} - Object with data to be inserted into Handlebars.
+     */
     function getYearsAndAmounts (byYearsArray) {
       let lowestYear = 10000
       let highestYear = -10000
