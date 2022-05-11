@@ -59,36 +59,56 @@ export class HimalayaController {
     })
     const deathsData = results.hits.hits
     console.log(deathsData)
+    console.log(results)
 
-    const deathsByYear = {}
-    var deathYearsStr = ''
-    var deathAmountsStr = ''
+    var deathsFound = false
 
-    for (let i = 1900; i < 2023; i++) {
-      deathsByYear[i] = 0
-      if (deathYearsStr !== '')
-        deathYearsStr += ', ' + i
-      else
-        deathYearsStr += i
-    }
-
-    for (let i = 0; i < deathsData.length; i++) {
-      const element = deathsData[i]._source
-      deathsByYear[element.yr_season.substring(0, 4)]++
-    }
-
-    for (let key in deathsByYear) {
-      const element = deathsByYear[key]
-      if (deathAmountsStr !== '')
-        deathAmountsStr += ', ' + element
-      else
-        deathAmountsStr += element
-    }
-
-    //console.log(deathsByYear)
-    console.log(deathYearsStr)
-    console.log(deathAmountsStr)
+    if (deathsData.length > 0)
+    {
+      var deathsFound = true
     
-    res.render('himalaya/peak', { peakData, climbStatus, deathYearsStr, deathAmountsStr })
+      const deathsByYear = {}
+      var deathYearsStr = ''
+      var deathAmountsStr = ''
+      var lowestYear = 10000
+      var highestYear = -10000
+
+      for (let i = 0; i < deathsData.length; i++) {
+        const element = deathsData[i]._source
+        const year = Number(element.yr_season.substring(0, 4))
+        if (!(year in deathsByYear))
+          deathsByYear[year] = 1
+        else
+          deathsByYear[year]++
+        if (year < lowestYear)
+          lowestYear = year
+        if (year > highestYear)
+          highestYear = year
+      }
+
+      for (let i = lowestYear; i < (highestYear + 1); i++) {
+        if (!(i in deathsByYear))
+          deathsByYear[i] = 0
+        if (deathYearsStr !== '')
+          deathYearsStr += ', ' + i
+        else
+          deathYearsStr += i
+      }
+
+      for (let key in deathsByYear) {
+        const element = deathsByYear[key]
+        if (deathAmountsStr !== '')
+          deathAmountsStr += ', ' + element
+        else
+          deathAmountsStr += element
+      }
+
+      //console.log(deathsByYear)
+      console.log(deathYearsStr)
+      console.log(deathAmountsStr)
+    }
+
+    
+    res.render('himalaya/peak', { peakData, climbStatus, deathsFound, deathYearsStr, deathAmountsStr })
   }
 }
