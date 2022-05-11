@@ -89,15 +89,6 @@ export class HimalayaController {
           byYear[year] = 1
         else
           byYear[year]++
-/*        if (year < lowestYear)
-          lowestYear = year
-        if (year > highestYear)
-          highestYear = year
-      } 
-
-      for (let i = lowestYear; i < (highestYear + 1); i++) {
-        if (!(i in byYear))
-          byYear[i] = 0*/
       }
 
       return byYear
@@ -107,10 +98,11 @@ export class HimalayaController {
 
       var lowestYear = 10000
       var highestYear = -10000
-      const returns = {
+      const obj = {
         yearStrings: [],
         amountStrings: [],
-        displayChart: false
+        displayAnyChart: false,
+        displayCharts: []
        }
 
       byYearsArray.forEach(byYears => {
@@ -121,9 +113,11 @@ export class HimalayaController {
           if (year > highestYear)
             highestYear = year
         }
+
+        obj.displayCharts.push(Object.keys(byYears).length > 0)
       })
 
-      returns.displayChart = (lowestYear < 10000 && highestYear > -10000)
+      obj.displayAnyChart = (lowestYear < 10000 && highestYear > -10000)
 
       byYearsArray.forEach(byYears => {
 
@@ -141,11 +135,11 @@ export class HimalayaController {
           }
         }
 
-        returns.yearStrings.push(yearsStr)
-        returns.amountStrings.push(amountsStr)
+        obj.yearStrings.push(yearsStr)
+        obj.amountStrings.push(amountsStr)
       })
 
-      return returns
+      return obj
     }
 
     const deathsByYears = getDataByYear(deathsData, 'yr_season')
@@ -154,14 +148,15 @@ export class HimalayaController {
 
     console.log(yearsAndAmounts)
 
-    /*if (deathsData.length > 0)
-    {
-      var deathsFound = true
-
-      const deathsByYear = getDataByYear(deathsData, 'yr_season')
-      const deathYearsAndAmountsStrings = getYearsAndAmountsStrings(deathsByYear, deathsByYear.lowestYear, deathsByYear.highestYear)
-    }*/
-
-    res.render('himalaya/peak', { peakData, climbStatus, displayChart: yearsAndAmounts.displayChart, years: yearsAndAmounts.yearStrings[0], deathAmounts: yearsAndAmounts.amountStrings[0], summiterAmounts: yearsAndAmounts.amountStrings[1]})
+    res.render('himalaya/peak', {
+      peakData,
+      climbStatus,
+      displayAnyChart: yearsAndAmounts.displayAnyChart,
+      years: yearsAndAmounts.yearStrings[0],
+      deathAmounts: yearsAndAmounts.amountStrings[0],
+      displayDeaths: yearsAndAmounts.displayCharts[0],
+      summiterAmounts: yearsAndAmounts.amountStrings[1],
+      displaySummiters: yearsAndAmounts.displayCharts[1]
+    })
   }
 }
