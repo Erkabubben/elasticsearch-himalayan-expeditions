@@ -12,21 +12,19 @@
 {{/if}}
 </p>
 
-<canvas id="myChart" width="400" height="400"></canvas>
-<!--<script type="module" src="./js/testchart.js"></script>
-<script src="../../chart.js/dist/chart.js"></script>-->
+<canvas id="myChart" width="100%" height="32px"></canvas>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script type="module">
     //import Chart from 'chart.js'
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: [{{deathYearsStr}}],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [{{deathAmountsStr}}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

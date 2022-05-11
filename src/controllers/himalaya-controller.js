@@ -34,7 +34,7 @@ export class HimalayaController {
   }
 
   async peak (req, res, next) {
-    const results = await res.elasticSearchController.search({
+    var results = await res.elasticSearchController.search({
       index: 'peaks',
       size: 1,
       query: {
@@ -45,8 +45,50 @@ export class HimalayaController {
     })
     const peakData = results.hits.hits[0]._source
     const climbStatus = (peakData.climb_status === 'Climbed')
-    console.log(peakData)
+    //console.log(peakData)
+
+    results = await res.elasticSearchController.search({
+      index: 'deaths',
+      size: 10000,
+      //filter_path : ['hits.hits._source.yr_season'],
+      query: {
+        "term": {
+          peak_id: req.query.peaks
+        }
+      }
+    })
+    const deathsData = results.hits.hits
+    console.log(deathsData)
+
+    const deathsByYear = {}
+    var deathYearsStr = ''
+    var deathAmountsStr = ''
+
+    for (let i = 1900; i < 2023; i++) {
+      deathsByYear[i] = 0
+      if (deathYearsStr !== '')
+        deathYearsStr += ', ' + i
+      else
+        deathYearsStr += i
+    }
+
+    for (let i = 0; i < deathsData.length; i++) {
+      const element = deathsData[i]._source
+      deathsByYear[element.yr_season.substring(0, 4)]++
+    }
+
+    for (let key in deathsByYear) {
+      const element = deathsByYear[key]
+      if (deathAmountsStr !== '')
+        deathAmountsStr += ', ' + element
+      else
+        deathAmountsStr += element
+    }
+
+    //console.log(deathsByYear)
+    console.log(deathYearsStr)
+    console.log(deathAmountsStr)
     
-    res.render('himalaya/peak', { peakData, climbStatus })
+    res.render('himalaya/peak', { peakData, climbStatus, deathYearsStr, deathAmountsStr })
   }
 }
