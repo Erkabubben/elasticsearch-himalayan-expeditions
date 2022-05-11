@@ -45,7 +45,7 @@ export class HimalayaController {
     })
     const peakData = results.hits.hits[0]._source
     const climbStatus = (peakData.climb_status === 'Climbed')
-    //console.log(peakData)
+    console.log(peakData)
 
     results = await res.elasticSearchController.search({
       index: 'deaths',
@@ -58,18 +58,21 @@ export class HimalayaController {
       }
     })
     const deathsData = results.hits.hits
-    console.log(deathsData)
-    console.log(results)
+    //console.log(deathsData)
+    //console.log(results)
 
     var deathsFound = false
+
+    function getDataByYear() {
+      
+    }
 
     if (deathsData.length > 0)
     {
       var deathsFound = true
     
       const deathsByYear = {}
-      var deathYearsStr = ''
-      var deathAmountsStr = ''
+
       var lowestYear = 10000
       var highestYear = -10000
 
@@ -84,11 +87,17 @@ export class HimalayaController {
           lowestYear = year
         if (year > highestYear)
           highestYear = year
-      }
+      } 
 
       for (let i = lowestYear; i < (highestYear + 1); i++) {
         if (!(i in deathsByYear))
           deathsByYear[i] = 0
+      }
+
+      var deathYearsStr = ''
+      var deathAmountsStr = ''
+
+      for (let i = lowestYear; i < (highestYear + 1); i++) {
         if (deathYearsStr !== '')
           deathYearsStr += ', ' + i
         else
@@ -102,13 +111,23 @@ export class HimalayaController {
         else
           deathAmountsStr += element
       }
-
-      //console.log(deathsByYear)
-      console.log(deathYearsStr)
-      console.log(deathAmountsStr)
     }
 
-    
+    results = await res.elasticSearchController.search({
+      index: 'summiters',
+      size: 10000,
+      //filter_path : ['hits.hits._source.yr_season'],
+      query: {
+        "term": {
+          peak_id: req.query.peaks
+        }
+      }
+    })
+
+    const summitersData = results.hits.hits
+    console.log(summitersData)
+    console.log(results)
+
     res.render('himalaya/peak', { peakData, climbStatus, deathsFound, deathYearsStr, deathAmountsStr })
   }
 }
