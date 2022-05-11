@@ -57,62 +57,13 @@ export class HimalayaController {
         }
       }
     })
+
     const deathsData = results.hits.hits
     //console.log(deathsData)
     //console.log(results)
 
     var deathsFound = false
-
-    function getDataByYear() {
-      
-    }
-
-    if (deathsData.length > 0)
-    {
-      var deathsFound = true
     
-      const deathsByYear = {}
-
-      var lowestYear = 10000
-      var highestYear = -10000
-
-      for (let i = 0; i < deathsData.length; i++) {
-        const element = deathsData[i]._source
-        const year = Number(element.yr_season.substring(0, 4))
-        if (!(year in deathsByYear))
-          deathsByYear[year] = 1
-        else
-          deathsByYear[year]++
-        if (year < lowestYear)
-          lowestYear = year
-        if (year > highestYear)
-          highestYear = year
-      } 
-
-      for (let i = lowestYear; i < (highestYear + 1); i++) {
-        if (!(i in deathsByYear))
-          deathsByYear[i] = 0
-      }
-
-      var deathYearsStr = ''
-      var deathAmountsStr = ''
-
-      for (let i = lowestYear; i < (highestYear + 1); i++) {
-        if (deathYearsStr !== '')
-          deathYearsStr += ', ' + i
-        else
-          deathYearsStr += i
-      }
-
-      for (let key in deathsByYear) {
-        const element = deathsByYear[key]
-        if (deathAmountsStr !== '')
-          deathAmountsStr += ', ' + element
-        else
-          deathAmountsStr += element
-      }
-    }
-
     results = await res.elasticSearchController.search({
       index: 'summiters',
       size: 10000,
@@ -128,6 +79,89 @@ export class HimalayaController {
     console.log(summitersData)
     console.log(results)
 
-    res.render('himalaya/peak', { peakData, climbStatus, deathsFound, deathYearsStr, deathAmountsStr })
+    function getDataByYear(data, propertyName) {
+      const byYear = {}
+
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i]._source
+        const year = Number(element[propertyName].substring(0, 4))
+        if (!(year in byYear))
+          byYear[year] = 1
+        else
+          byYear[year]++
+/*        if (year < lowestYear)
+          lowestYear = year
+        if (year > highestYear)
+          highestYear = year
+      } 
+
+      for (let i = lowestYear; i < (highestYear + 1); i++) {
+        if (!(i in byYear))
+          byYear[i] = 0*/
+      }
+
+      return byYear
+    }
+
+    function getYearsAndAmounts(byYearsArray) {
+
+      var lowestYear = 10000
+      var highestYear = -10000
+      const returns = {
+        yearStrings: [],
+        amountStrings: [],
+        displayChart: false
+       }
+
+      byYearsArray.forEach(byYears => {
+        for (let key in byYears) {
+          const year = Number(key)
+          if (year < lowestYear)
+            lowestYear = year
+          if (year > highestYear)
+            highestYear = year
+        }
+      })
+
+      returns.displayChart = (lowestYear < 10000 && highestYear > -10000)
+
+      byYearsArray.forEach(byYears => {
+
+        var yearsStr = ''
+        var amountsStr = ''
+
+        for (let i = lowestYear; i < (highestYear + 1); i++) {
+          yearsStr += yearsStr !== '' ? ', ' + i : i
+
+          if (i in byYears) {
+            const element = byYears[i]
+            amountsStr += amountsStr !== '' ? ', ' + element : element
+          } else {
+            amountsStr += amountsStr !== '' ? ', ' + 0 : 0
+          }
+        }
+
+        returns.yearStrings.push(yearsStr)
+        returns.amountStrings.push(amountsStr)
+      })
+
+      return returns
+    }
+
+    const deathsByYears = getDataByYear(deathsData, 'yr_season')
+    const summitersByYears = getDataByYear(summitersData, 'yr_season')
+    const yearsAndAmounts = getYearsAndAmounts([ deathsByYears, summitersByYears ])
+
+    console.log(yearsAndAmounts)
+
+    /*if (deathsData.length > 0)
+    {
+      var deathsFound = true
+
+      const deathsByYear = getDataByYear(deathsData, 'yr_season')
+      const deathYearsAndAmountsStrings = getYearsAndAmountsStrings(deathsByYear, deathsByYear.lowestYear, deathsByYear.highestYear)
+    }*/
+
+    res.render('himalaya/peak', { peakData, climbStatus, displayChart: yearsAndAmounts.displayChart, years: yearsAndAmounts.yearStrings[0], deathAmounts: yearsAndAmounts.amountStrings[0], summiterAmounts: yearsAndAmounts.amountStrings[1]})
   }
 }
