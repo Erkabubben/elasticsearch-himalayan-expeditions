@@ -56,7 +56,7 @@ export class HimalayaController {
 
     results = await res.elasticSearchController.search({
       index: 'summiters',
-      size: 10000,
+      size: 30000,
       query: {
         term: {
           peak_id: req.query.peaks

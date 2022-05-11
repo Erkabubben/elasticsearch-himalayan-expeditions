@@ -1,7 +1,11 @@
-export default {
+const maxResultsWindow = 30000
 
+export default {
   deaths: {
     index: 'deaths',
+    settings: {
+      max_result_window: maxResultsWindow
+    },
     mappings: {
       properties: {
         age: {
@@ -45,6 +49,9 @@ export default {
   },
   expeditions: {
     index: 'expeditions',
+    settings: {
+      max_result_window: maxResultsWindow
+    },
     mappings: {
       properties: {
         accidents: {
@@ -281,6 +288,9 @@ export default {
   },
   summiters: {
     index: 'summiters',
+    settings: {
+      max_result_window: maxResultsWindow
+    },
     mappings: {
       properties: {
         age: {

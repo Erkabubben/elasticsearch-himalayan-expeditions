@@ -186,8 +186,9 @@ export class ElasticSearchController {
     // Adds isClimbed bool based on climb_status so that Handlebars can display either a cross or a checkmark.
     for (let i = 0; i < results.hits.hits.length; i++) {
       results.hits.hits[i]._source.isClimbed = (results.hits.hits[i]._source.climb_status[0] !== 'U')
-      if (results.hits.hits[i]._source.peak_id === peak)
-        results.hits.hits[i]._source.currentlySelected = true;
+      if (results.hits.hits[i]._source.peak_id === peak) {
+        results.hits.hits[i]._source.currentlySelected = true
+      }
     }
 
     return results.hits.hits
