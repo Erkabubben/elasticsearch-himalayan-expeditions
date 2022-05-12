@@ -16,7 +16,7 @@ import { fileURLToPath } from 'url'
 import { router } from './routes/router.js'
 
 import http from 'http'
-import { ElasticSearchController } from './elastic-search-controller.js'
+import { ElasticSearchController } from './controllers/elastic-search-controller.js'
 
 /**
  * The main function of the application.
