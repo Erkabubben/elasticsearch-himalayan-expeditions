@@ -47,7 +47,6 @@ export class ElasticSearchController {
     await this.createIndices()
     await this.addDocumentsFromCSV()
     await this.refreshIndices()
-    await this.testSearch()
   }
 
   /**
