@@ -29,6 +29,7 @@ export class HimalayaController {
    * @param {Function} next - Express next middleware function.
    */
   async peak (req, res, next) {
+    // Retrieves all data on the selected peak from the peaks index.
     let results = await res.elasticSearchController.search({
       index: 'peaks',
       size: 1,
@@ -42,9 +43,10 @@ export class HimalayaController {
     const peakData = results.hits.hits[0]._source
     const climbStatus = (peakData.climb_status === 'Climbed')
 
+    // Retrieves data on the deaths of the selected peak from the deaths index.
     results = await res.elasticSearchController.search({
       index: 'deaths',
-      size: 10000,
+      size: 30000,
       query: {
         term: {
           peak_id: req.query.peaks
@@ -54,6 +56,7 @@ export class HimalayaController {
 
     const deathsData = results.hits.hits
 
+    // Retrieves data on the summiters of the selected peak from the summiters index.
     results = await res.elasticSearchController.search({
       index: 'summiters',
       size: 30000,
@@ -90,7 +93,8 @@ export class HimalayaController {
     }
 
     /**
-     * Displays a page with information about a selected peak.
+     * Takes a number of year-amount objects and returns an object with data that can
+     * be easily displayed by Handlebars.
      *
      * @param {Array} byYearsArray - Array of objects with year-amount key-value pairs.
      * @returns {object} - Object with data to be inserted into Handlebars.
@@ -99,6 +103,7 @@ export class HimalayaController {
       let lowestYear = 10000
       let highestYear = -10000
 
+      // Initiates the object to be returned.
       const obj = {
         yearStrings: [],
         amountStrings: [],
@@ -144,8 +149,10 @@ export class HimalayaController {
       return obj
     }
 
+    // Parses deaths and summiters data to years-amounts objects.
     const deathsByYears = getDataByYear(deathsData, 'yr_season')
     const summitersByYears = getDataByYear(summitersData, 'yr_season')
+    // Converts the year-amount objects to data suitable for Handlebars.
     const yearsAndAmounts = getYearsAndAmounts([deathsByYears, summitersByYears])
 
     res.render('himalaya/peak', {
