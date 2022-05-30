@@ -1,0 +1,23 @@
+<header>
+    <a class="navbar-brand" href="./">Himalayan Expeditions</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="leftlist">
+      <li class="nav-item" style="display: none">
+        <a class="nav-link" href="./">Home</a>
+      </li>
+      <li class="nav-item">
+        <form id="peaks-form" action="./peak">
+            <label for="peaks">Select a peak:</label>
+            <select name="peaks" id="peaks">
+        {{#if peaks.length}}
+        {{#each peaks}}
+            <option value="{{this._source.peak_id}}" {{#if this._source.currentlySelected}}selected="selected"{{/if}}>
+                {{#if this._source.isClimbed}}✔️{{else}}❌{{/if}} {{this._source.peak_name}}
+            </option>
+        {{/each}}
+        {{/if}}
+        </select>
+        <input type="submit" value="Select" class="button-link">
+        </form>
+      </li>
+    </ul>
+</header>
