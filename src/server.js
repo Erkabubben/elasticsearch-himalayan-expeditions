@@ -59,7 +59,7 @@ const main = async () => {
   // Populates the request object with a body object (req.body).
   app.use(express.urlencoded({ extended: false }))
 
-  // Webhook: Enable body parsing of application/json
+  // Webhook: Enable body parsing of application/json.
   // Populates the request object with a body object (req.body).
   app.use(express.json())
 
